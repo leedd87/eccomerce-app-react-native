@@ -14,7 +14,7 @@ import { MotiView, useAnimationState } from 'moti'
 import { Shadow } from 'react-native-shadow-2'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import { TextButton } from '../../components'
+import { TextButton, FormInput } from '../../components'
 import { icons, images, COLORS, FONTS, SIZES } from '../../constants'
 
 const AutMain = () => {
@@ -62,7 +62,28 @@ const AutMain = () => {
 							contentContainerStyle={{
 								flexGrow: 1,
 								justifyContent: 'center',
-							}}></KeyboardAwareScrollView>
+							}}>
+							{/* Email */}
+							<FormInput
+								containerStyle={{
+									borderRadius: SIZES.radius,
+									backgroundColor: COLORS.error,
+								}}
+								placeholder="Email"
+								prependComponent={
+									<Image
+										source={icons.email}
+										style={{
+											width: 25,
+											height: 25,
+											marginRight: SIZES.base,
+										}}
+									/>
+								}
+							/>
+
+							{/* Password */}
+						</KeyboardAwareScrollView>
 					</View>
 				</Shadow>
 			</MotiView>
