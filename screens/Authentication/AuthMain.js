@@ -12,6 +12,7 @@ import {
 import { MotiView, useAnimationState } from 'moti'
 //import { useAnimationState } from 'moti' //UseAnimationState
 import { Shadow } from 'react-native-shadow-2'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { TextButton } from '../../components'
 import { icons, images, COLORS, FONTS, SIZES } from '../../constants'
@@ -53,6 +54,15 @@ const AutMain = () => {
 							}}>
 							Sign in to continue
 						</Text>
+						<KeyboardAwareScrollView
+							enableOnAndroid={true}
+							keyboardDismissMode="on-drag"
+							keyboardShouldPersistTaps={'handled'}
+							extraScrollHeight={-300}
+							contentContainerStyle={{
+								flexGrow: 1,
+								justifyContent: 'center',
+							}}></KeyboardAwareScrollView>
 					</View>
 				</Shadow>
 			</MotiView>

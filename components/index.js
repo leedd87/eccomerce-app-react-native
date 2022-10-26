@@ -1,7 +1,5 @@
-import CountryDropDown from "./CountryDropDown";
-import TextButton from "./TextButton";
+import CountryDropDown from './CountryDropDown'
+import TextButton from './TextButton'
+import FormInput from './FormInput'
 
-export {
-    CountryDropDown,
-    TextButton
-}
+export { CountryDropDown, TextButton, FormInput }
