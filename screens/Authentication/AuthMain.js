@@ -29,6 +29,10 @@ const AutMain = () => {
 		},
 	})
 
+	React.useEffect(() => {
+		animationState.transitionTo('signIn')
+	}, [])
+
 	//Render
 	function renderSignIn() {
 		return (
@@ -39,13 +43,35 @@ const AutMain = () => {
 					height: SIZES.height * 0.55,
 				}}>
 				<Shadow>
-					<View style={styles.authContainer}></View>
+					<View style={styles.authContainer}>
+						<Text
+							style={{
+								width: '60%',
+								lineHeight: 45,
+								color: COLORS.dark,
+								...FONTS.h1,
+							}}>
+							Sign in to continue
+						</Text>
+					</View>
 				</Shadow>
 			</MotiView>
 		)
 	}
 
-	function renderSignUp() {}
+	function renderSignUp() {
+		return (
+			<MotiView
+				state={animationState}
+				style={{
+					marginTop: SIZES.padding,
+				}}>
+				<Shadow>
+					<View style={styles.authContainer}></View>
+				</Shadow>
+			</MotiView>
+		)
+	}
 
 	function renderAuthContainer() {
 		if (mode == 'signIn') {
@@ -75,6 +101,18 @@ const AutMain = () => {
 
 			{/* Auth Container */}
 			<View>{renderAuthContainer()}</View>
+			<TextButton
+				label="Toggle"
+				onPress={() => {
+					if (animationState.current === 'signIn') {
+						animationState.transitionTo('signUp')
+						setMode('signUp')
+					} else {
+						animationState.transitionTo('signIn')
+						setMode('signIn')
+					}
+				}}
+			/>
 		</View>
 	)
 }
