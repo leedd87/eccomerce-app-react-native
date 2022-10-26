@@ -38,7 +38,9 @@ const AutMain = () => {
 					marginTop: SIZES.padding,
 					height: SIZES.height * 0.55,
 				}}>
-				<View style={styles.authContainer}></View>
+				<Shadow>
+					<View style={styles.authContainer}></View>
+				</Shadow>
 			</MotiView>
 		)
 	}
