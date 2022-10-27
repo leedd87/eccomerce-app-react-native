@@ -10,7 +10,8 @@ const IconButton = ({ containerStyle, icon, iconStyle, onPress }) => {
 				alignItems: 'center',
 				justifyContent: 'center',
 				...containerStyle,
-			}}>
+			}}
+			onPress={onPress}>
 			<Image
 				source={icon}
 				resizeMode="contain"

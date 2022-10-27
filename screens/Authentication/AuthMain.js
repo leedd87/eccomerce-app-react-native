@@ -14,7 +14,7 @@ import { MotiView, useAnimationState } from 'moti'
 import { Shadow } from 'react-native-shadow-2'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import { TextButton, FormInput } from '../../components'
+import { TextButton, FormInput, IconButton } from '../../components'
 import { icons, images, COLORS, FONTS, SIZES } from '../../constants'
 
 const AutMain = () => {
@@ -27,6 +27,8 @@ const AutMain = () => {
 	const [phone, setPhone] = React.useState('')
 
 	const [password, setPassword] = React.useState('')
+
+	const [isVisible, setIsVisible] = React.useState(false)
 
 	//Animation States
 	const animationState = useAnimationState({
@@ -101,7 +103,8 @@ const AutMain = () => {
 								}}
 								placeholder="Password"
 								value={password}
-								onChange={(password) => setEmail(password)}
+								secureTextEntry={!isVisible}
+								onChange={(text) => setPassword(text)}
 								prependComponent={
 									<Image
 										source={icons.lock}
@@ -110,6 +113,19 @@ const AutMain = () => {
 											height: 25,
 											marginRight: SIZES.base,
 										}}
+									/>
+								}
+								appendComponent={
+									<IconButton
+										icon={
+											isVisible
+												? icons.eye_off
+												: icons.eye
+										}
+										iconStyle={{
+											tintColor: COLORS.grey,
+										}}
+										onPress={() => setIsVisible(!isVisible)}
 									/>
 								}
 							/>

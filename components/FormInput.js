@@ -53,8 +53,8 @@ const FormInput = ({
 					onPressIn={onPress}
 					editable={editable}
 				/>
+				{appendComponent}
 			</View>
-			{appendComponent}
 		</View>
 	)
 }
