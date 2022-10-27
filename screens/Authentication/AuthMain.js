@@ -7,6 +7,7 @@ import {
 	FlatList,
 	TouchableOpacity,
 	TouchableNativeFeedback,
+	TouchableWithoutFeedback,
 	StyleSheet,
 } from 'react-native'
 import { MotiView, useAnimationState } from 'moti'
@@ -14,10 +15,18 @@ import { MotiView, useAnimationState } from 'moti'
 import { Shadow } from 'react-native-shadow-2'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
-import { TextButton, FormInput, IconButton } from '../../components'
+import {
+	TextButton,
+	FormInput,
+	IconButton,
+	CountryDropDown,
+} from '../../components'
 import { icons, images, COLORS, FONTS, SIZES } from '../../constants'
 
 const AutMain = () => {
+	const [countries, setCountries] = React.useState([])
+	const [showCountryModal, setShowCountryModal] = React.useState(false)
+
 	const [mode, setMode] = React.useState('signIn')
 
 	const [email, setEmail] = React.useState('')
@@ -26,9 +35,99 @@ const AutMain = () => {
 
 	const [phone, setPhone] = React.useState('')
 
+	const [selectedCountry, setSelectedCountry] = React.useState(null)
+
 	const [password, setPassword] = React.useState('')
 
 	const [isVisible, setIsVisible] = React.useState(false)
+
+	//Countris
+	React.useEffect(() => {
+		// Fetch countires
+		fetch('https://restcountries.com/v2/all')
+			.then((response) => response.json())
+			.then((data) => {
+				let countryData = data.map((item) => {
+					return {
+						code: item.alpha2Code,
+						name: item.name,
+						callingCode: `+${item.callingCodes[0]}`,
+						flag: `https://countryflagsapi.com/png/${item.alpha2Code}`,
+					}
+				})
+
+				setCountries(countryData)
+			})
+	}, [])
+
+	function renderCountryModal() {
+		return (
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={showCountryModal}>
+				<TouchableWithoutFeedback
+					onPress={() => setShowCountryModal(false)}>
+					<View
+						style={{
+							flex: 1,
+							alignItems: 'center',
+							justifyContent: 'center',
+							backgroundColor: COLORS.dark80,
+						}}>
+						<View
+							style={{
+								height: 400,
+								width: SIZES.width * 0.8,
+								backgroundColor: COLORS.light,
+								borderRadius: SIZES.radius,
+							}}>
+							<FlatList
+								data={countries}
+								keyExtractor={(item) => item.code}
+								contentContainerStyle={{
+									paddingHorizontal: SIZES.padding,
+									paddingBottom: SIZES.padding,
+								}}
+								renderItem={({ item }) => {
+									return (
+										<TouchableOpacity
+											style={{
+												flexDirection: 'row',
+												alignItems: 'center',
+												marginTop: SIZES.radius,
+											}}
+											onPress={() => {
+												console.log(item)
+												setSelectedCountry(item)
+												setShowCountryModal(false)
+											}}>
+											<Image
+												source={{ uri: item.flag }}
+												resizeMode="contain"
+												style={{
+													width: 40,
+													height: 30,
+												}}
+											/>
+											<Text
+												style={{
+													flex: 1,
+													marginLeft: SIZES.radius,
+													...FONTS.body3,
+												}}>
+												{item.name}
+											</Text>
+										</TouchableOpacity>
+									)
+								}}
+							/>
+						</View>
+					</View>
+				</TouchableWithoutFeedback>
+			</Modal>
+		)
+	}
 
 	//Animation States
 	const animationState = useAnimationState({
@@ -129,7 +228,36 @@ const AutMain = () => {
 									/>
 								}
 							/>
+							<View
+								style={{
+									alignItems: 'flex-end',
+								}}>
+								<TextButton
+									label="Forgot Password"
+									contentContainerStyle={{
+										marginTop: SIZES.radius,
+										backgroundColor: null,
+									}}
+									labelStyle={{
+										color: COLORS.support3,
+										...FONTS.h4,
+									}}
+								/>
+							</View>
 						</KeyboardAwareScrollView>
+
+						<TextButton
+							label="Log In"
+							contentContainerStyle={{
+								height: 55,
+								borderRadius: SIZES.radius,
+								backgroundColor: COLORS.primary,
+							}}
+							labelStyle={{
+								...FONTS.h3,
+							}}
+							onPress={() => console.log('Log In')}
+						/>
 					</View>
 				</Shadow>
 			</MotiView>
@@ -144,7 +272,134 @@ const AutMain = () => {
 					marginTop: SIZES.padding,
 				}}>
 				<Shadow>
-					<View style={styles.authContainer}></View>
+					<View style={styles.authContainer}>
+						<Text
+							style={{
+								lineHeight: 45,
+								...FONTS.h1,
+							}}>
+							Create new account
+						</Text>
+						<KeyboardAwareScrollView
+							enableOnAndroid={true}
+							keyboardDismissMode="on-drag"
+							keyboardShouldPersistTaps={'handled'}
+							extraScrollHeight={-300}
+							contentContainerStyle={{
+								flexGrow: 1,
+								marginTop: SIZES.padding,
+								paddingBottom: SIZES.padding * 2,
+							}}>
+							{/* Name */}
+							<FormInput
+								containerStyle={{
+									borderRadius: SIZES.radius,
+									backgroundColor: COLORS.error,
+								}}
+								placeholder="Name"
+								value={name}
+								onChange={(text) => setName(text)}
+								prependComponent={
+									<Image
+										source={icons.person}
+										style={{
+											width: 25,
+											height: 25,
+											marginRight: SIZES.base,
+										}}
+									/>
+								}
+							/>
+
+							{/* Email */}
+							<FormInput
+								containerStyle={{
+									marginTop: SIZES.radius,
+									borderRadius: SIZES.radius,
+									backgroundColor: COLORS.error,
+								}}
+								placeholder="Email"
+								value={email}
+								onChange={(text) => setEmail(text)}
+								prependComponent={
+									<Image
+										source={icons.email}
+										style={{
+											width: 25,
+											height: 25,
+											marginRight: SIZES.base,
+										}}
+									/>
+								}
+							/>
+							{/* Phone */}
+							<FormInput
+								containerStyle={{
+									marginTop: SIZES.radius,
+									borderRadius: SIZES.radius,
+									backgroundColor: COLORS.error,
+								}}
+								placeholder="Email"
+								value={phone}
+								onChange={(text) => setPhone(text)}
+								prependComponent={
+									<Image
+										source={icons.phone}
+										style={{
+											width: 25,
+											height: 25,
+											marginRight: SIZES.base,
+										}}
+									/>
+								}
+							/>
+
+							{/* Country */}
+							<CountryDropDown
+								containerStyle={{ marginTop: SIZES.radius }}
+								selectedCountry={selectedCountry}
+								onPress={() =>
+									setShowCountryModal(!showCountryModal)
+								}
+							/>
+							{renderCountryModal()}
+							{/* Password */}
+							<FormInput
+								containerStyle={{
+									marginTop: SIZES.radius,
+									borderRadius: SIZES.radius,
+									backgroundColor: COLORS.error,
+								}}
+								placeholder="Password"
+								value={password}
+								secureTextEntry={!isVisible}
+								onChange={(text) => setPassword(text)}
+								prependComponent={
+									<Image
+										source={icons.lock}
+										style={{
+											width: 25,
+											height: 25,
+											marginRight: SIZES.base,
+										}}
+									/>
+								}
+								appendComponent={
+									<IconButton
+										icon={
+											isVisible
+												? icons.eye_off
+												: icons.eye
+										}
+										iconStyle={{
+											tintColor: COLORS.grey,
+										}}
+										onPress={() => setIsVisible(!isVisible)}
+									/>
+								}
+							/>
+						</KeyboardAwareScrollView>
+					</View>
 				</Shadow>
 			</MotiView>
 		)
@@ -198,8 +453,7 @@ const styles = StyleSheet.create({
 	authContainer: {
 		flex: 1,
 		width: SIZES.width - SIZES.padding * 2,
-		paddingHorizontal: SIZES.padding,
-		paddingVertical: SIZES.radius,
+		padding: SIZES.padding,
 		borderRadius: SIZES.radius,
 		backgroundColor: COLORS.light,
 	},
