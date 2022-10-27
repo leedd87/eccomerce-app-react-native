@@ -20,6 +20,14 @@ import { icons, images, COLORS, FONTS, SIZES } from '../../constants'
 const AutMain = () => {
 	const [mode, setMode] = React.useState('signIn')
 
+	const [email, setEmail] = React.useState('')
+
+	const [name, setName] = React.useState('')
+
+	const [phone, setPhone] = React.useState('')
+
+	const [password, setPassword] = React.useState('')
+
 	//Animation States
 	const animationState = useAnimationState({
 		signIn: {
@@ -80,9 +88,31 @@ const AutMain = () => {
 										}}
 									/>
 								}
+								value={email}
+								onChange={(text) => setEmail(text)}
 							/>
 
 							{/* Password */}
+							<FormInput
+								containerStyle={{
+									marginTop: SIZES.radius,
+									borderRadius: SIZES.radius,
+									backgroundColor: COLORS.error,
+								}}
+								placeholder="Password"
+								value={password}
+								onChange={(password) => setEmail(password)}
+								prependComponent={
+									<Image
+										source={icons.lock}
+										style={{
+											width: 25,
+											height: 25,
+											marginRight: SIZES.base,
+										}}
+									/>
+								}
+							/>
 						</KeyboardAwareScrollView>
 					</View>
 				</Shadow>
