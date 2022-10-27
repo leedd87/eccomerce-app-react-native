@@ -20,6 +20,7 @@ import {
 	FormInput,
 	IconButton,
 	CountryDropDown,
+	Checkbox,
 } from '../../components'
 import { icons, images, COLORS, FONTS, SIZES } from '../../constants'
 
@@ -40,6 +41,7 @@ const AutMain = () => {
 	const [password, setPassword] = React.useState('')
 
 	const [isVisible, setIsVisible] = React.useState(false)
+	const [termsChecked, setTermsChecked] = React.useState(false)
 
 	//Countris
 	React.useEffect(() => {
@@ -362,7 +364,7 @@ const AutMain = () => {
 									setShowCountryModal(!showCountryModal)
 								}
 							/>
-							{renderCountryModal()}
+
 							{/* Password */}
 							<FormInput
 								containerStyle={{
@@ -398,10 +400,122 @@ const AutMain = () => {
 									/>
 								}
 							/>
+							{/* Terms and Conditons */}
+							<Checkbox
+								containerStyle={{
+									marginTop: SIZES.radius,
+								}}
+								isSelected={termsChecked}
+								onPress={() => setTermsChecked(!termsChecked)}
+							/>
 						</KeyboardAwareScrollView>
+
+						<TextButton
+							label="Create Account"
+							contentContainerStyle={{
+								height: 55,
+								borderRadius: SIZES.radius,
+								backgroundColor: COLORS.primary,
+							}}
+							labelStyle={{
+								...FONTS.h3,
+							}}
+						/>
 					</View>
 				</Shadow>
 			</MotiView>
+		)
+	}
+
+	function renderAuthContainerFooter() {
+		return (
+			<View
+				style={{
+					flexDirection: 'row',
+					height: 80,
+					alignItems: 'flex-end',
+					justifyContent: 'center',
+					marginTop: -30,
+					marginHorizontal: SIZES.radius,
+					paddingBottom: SIZES.radius,
+					borderBottomLeftRadius: SIZES.radius,
+					borderBottomRightRadius: SIZES.radius,
+					backgroundColor: COLORS.light60,
+					zIndex: 0,
+				}}>
+				<Text style={{ color: COLORS.grey, ...FONTS.body5 }}>
+					{mode == 'signIn'
+						? "Don't have an account"
+						: 'I already have an account'}
+				</Text>
+				<TextButton
+					label={mode == 'signIn' ? 'Create New Account' : 'Sign In'}
+					containerStyle={{
+						marginLeft: SIZES.base,
+						backgroundColor: null,
+					}}
+					labelStyle={{
+						color: COLORS.support3,
+						...FONTS.h5,
+					}}
+					onPress={() => {
+						if (animationState.current === 'signIn') {
+							animationState.transitionTo('signUp')
+							setMode('signUp')
+						} else {
+							animationState.transitionTo('signIn')
+							setMode('signIn')
+						}
+					}}
+				/>
+			</View>
+		)
+	}
+
+	function renderSocialLogins() {
+		return (
+			<View
+				style={{
+					flex: 1,
+					alignItems: 'center',
+					justifyContent: 'center',
+					marginTop: -30,
+					zIndex: -1,
+				}}>
+				<Text style={{ color: COLORS.dark, ...FONTS.body3 }}>
+					OR login with
+				</Text>
+
+				<View style={{ flexDirection: 'row', marginTop: SIZES.radius }}>
+					<IconButton
+						icon={icons.twitter}
+						iconStyle={{
+							tintColor: COLORS.dark,
+						}}
+						containerStyle={styles.socialButtonContainer}
+					/>
+					<IconButton
+						icon={icons.google}
+						iconStyle={{
+							tintColor: COLORS.dark,
+						}}
+						containerStyle={{
+							...styles.socialButtonContainer,
+							marginLeft: SIZES.radius,
+						}}
+					/>
+					<IconButton
+						icon={icons.linkedin}
+						iconStyle={{
+							tintColor: COLORS.dark,
+						}}
+						containerStyle={{
+							...styles.socialButtonContainer,
+							marginLeft: SIZES.radius,
+						}}
+					/>
+				</View>
+			</View>
 		)
 	}
 
@@ -432,19 +546,12 @@ const AutMain = () => {
 			/>
 
 			{/* Auth Container */}
-			<View>{renderAuthContainer()}</View>
-			<TextButton
-				label="Toggle"
-				onPress={() => {
-					if (animationState.current === 'signIn') {
-						animationState.transitionTo('signUp')
-						setMode('signUp')
-					} else {
-						animationState.transitionTo('signIn')
-						setMode('signIn')
-					}
-				}}
-			/>
+			<View style={{ zIndex: 1 }}>{renderAuthContainer()}</View>
+			{renderAuthContainerFooter()}
+			{/* Social Logins */}
+			{mode == 'signIn' && renderSocialLogins()}
+			{/* CountryModal */}
+			{renderCountryModal()}
 		</View>
 	)
 }
@@ -456,6 +563,15 @@ const styles = StyleSheet.create({
 		padding: SIZES.padding,
 		borderRadius: SIZES.radius,
 		backgroundColor: COLORS.light,
+		zIndex: 1,
+	},
+	socialButtonContainer: {
+		width: 55,
+		height: 55,
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: SIZES.radius,
+		backgroundColor: COLORS.grey20,
 	},
 })
 
