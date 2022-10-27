@@ -24,7 +24,7 @@ import {
 } from '../../components'
 import { icons, images, COLORS, FONTS, SIZES } from '../../constants'
 
-const AutMain = () => {
+const AutMain = ({ navigation }) => {
 	const [countries, setCountries] = React.useState([])
 	const [showCountryModal, setShowCountryModal] = React.useState(false)
 
@@ -258,7 +258,7 @@ const AutMain = () => {
 							labelStyle={{
 								...FONTS.h3,
 							}}
-							onPress={() => console.log('Log In')}
+							onPress={() => navigation.navigate('Home')}
 						/>
 					</View>
 				</Shadow>

@@ -3,4 +3,7 @@ import Walkthrough from './Walkthrough/Walkthrough'
 
 import AuthMain from './Authentication/AuthMain'
 
-export { Welcome, Walkthrough, AuthMain }
+import Home from './Home'
+import ScanProduct from './ScanProduct'
+
+export { Welcome, Walkthrough, AuthMain, Home, ScanProduct }

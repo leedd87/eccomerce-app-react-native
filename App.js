@@ -2,7 +2,7 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 
-import { Welcome, Walkthrough, AuthMain } from './screens'
+import { Welcome, Walkthrough, AuthMain, Home, ScanProduct } from './screens'
 
 const Stack = createStackNavigator()
 
@@ -17,6 +17,8 @@ const App = () => {
 				<Stack.Screen name="Welcome" component={Welcome} />
 				<Stack.Screen name="Walkthrough" component={Walkthrough} />
 				<Stack.Screen name="AuthMain" component={AuthMain} />
+				<Stack.Screen name="Home" component={Home} />
+				<Stack.Screen name="ScanProduct" component={ScanProduct} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	)
