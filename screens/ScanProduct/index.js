@@ -2,12 +2,29 @@ import { View, Text, Image, TouchableOpacity, Linking } from 'react-native'
 import React from 'react'
 import { IconButton, TextButton } from '../../components'
 import { COLORS, SIZES, FONTS, icons, constants, images } from '../../constants'
+import { Camera, useCameraDevices } from 'react-native-vision-camera'
 
 const ScanProduct = ({ navigation }) => {
 	const [selectedOption, setSelectedOption] = React.useState(
 		constants.scan_product_option.camera //esto es un String => 'CAMERA'
 	)
+	//Camera
+	const devices = useCameraDevices()
+	const device = devices.back
 
+	React.useEffect(() => {
+		requestCameraPermission()
+	}, [])
+
+	//Handler
+	//Para disparar el request se usa un useEffect
+	const requestCameraPermission = React.useCallback(async () => {
+		const permission = await Camera.requestCameraPermission()
+
+		if (permission === 'denied') await Linking.openSettings()
+	}, [])
+
+	//Render
 	function renderHeader() {
 		return (
 			<View
@@ -119,10 +136,37 @@ const ScanProduct = ({ navigation }) => {
 		)
 	}
 
+	function renderCamera() {
+		if (device == null) {
+			return (
+				<View
+					style={{
+						flex: 1,
+					}}
+				/>
+			)
+		} else {
+			return (
+				<View style={{ flex: 1 }}>
+					<Camera
+						style={{ flex: 1 }}
+						device={device}
+						isActive={true}
+						enableZoomGesture
+					/>
+				</View>
+			)
+		}
+	}
+
 	return (
 		<View style={{ flex: 1 }}>
 			{/* Header */}
 			{renderHeader()}
+
+			{/*Camera */}
+			{renderCamera()}
+
 			{/*Footer */}
 			{renderFooter()}
 		</View>
