@@ -16,8 +16,6 @@ const ScanProduct = ({ navigation }) => {
 		requestCameraPermission()
 	}, [])
 
-	//Handler
-	//Para disparar el request se usa un useEffect
 	const requestCameraPermission = React.useCallback(async () => {
 		const permission = await Camera.requestCameraPermission()
 
